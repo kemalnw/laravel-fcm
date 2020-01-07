@@ -27,9 +27,7 @@ class FcmServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('fcm', function ($app) {
-            return new Fcm();
-        });
+        $this->app->singleton('fcm', Fcm::class);
         Notification::resolved(function (ChannelManager $service) {
             $service->extend('fcm', function () {
                 return new FcmChannel();

@@ -177,7 +177,7 @@ class Fcm
                 ->post('/fcm/send', ['json' => $payloads]);
             return $response->getBody()->getContents();
         } catch (ClientException $e) {
-            throw (new RequestException($e->getMessage()))
+            throw (new RequestException('Invalid request options.'))
                 ->setResponse($e->getResponse());
         }
 

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 class FcmFacade extends Facade
 {
-    public function getFacadeAccessor()
+    protected static function getFacadeAccessor()
     {
         return 'fcm';
     }
