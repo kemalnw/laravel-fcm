@@ -17,6 +17,9 @@ class FcmChannel
     public function send($notifiable, Notification $notification)
     {
         $message    = $notification->toFcm($notifiable);
+        if (!empty($message->getRecipients())) {
+            return $message->send();
+        }
         $recipients = $notifiable->firebase_uid ?? $notifiable->routeNotificationFor('fcm', $notification);
         if (! $recipients) {
             throw new InvalidRecipientsException("You must provide a `firebase token` property on your notifiable entity.");

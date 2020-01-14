@@ -147,26 +147,36 @@ class Fcm
     }
 
     /**
+     * Retrieve recipient data
+     *
+     * @return array|null
+     */
+    public function getRecipients()
+    {
+        if ($this->topic) {
+            return ['to' => "/topics/{$this->topic}"];
+        }
+
+        if (empty($this->recipients)) {
+            return null;
+        } elseif (is_array($this->recipients)) {
+            return ['registration_ids'  => $this->recipients];
+        } else {
+            return ['to' => $this->recipients];
+        }
+    }
+
+    /**
      * @return void
      */
     public function send()
     {
-        $payloads = [
+        $payloads = array_merge([
             'content_available' => true,
             'priority'          => $this->priority,
             'notification'      => $this->notification,
             'time_to_live'      => (int) $this->timeToLive
-        ];
-
-        if ($this->topic) {
-            $payloads['to'] = "/topics/{$this->topic}";
-        }
-
-        if (is_array($this->recipients)) {
-            $payloads['registration_ids'] = $this->recipients;
-        } elseif (! empty($this->recipients)) {
-            $payloads['to'] = $this->recipients;
-        }
+        ], $this->getRecipients());
 
         if (! empty($this->data)) {
             $payloads['data'] = $this->data;
@@ -180,7 +190,5 @@ class Fcm
             throw (new RequestException('Invalid request options.'))
                 ->setResponse($e->getResponse());
         }
-
-
     }
 }

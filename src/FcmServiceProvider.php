@@ -17,7 +17,7 @@ class FcmServiceProvider extends BaseServiceProvider
     {
         $this->publishes([
             __DIR__.'/../config/fcm.php' => config_path('fcm.php'),
-        ]);
+        ], 'fcm');
     }
 
     /**
